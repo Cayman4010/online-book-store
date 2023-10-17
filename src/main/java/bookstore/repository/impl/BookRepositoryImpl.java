@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -41,9 +40,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public List<Book> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            Query<Book> getAllBooks =
-                    session.createQuery("FROM Book", Book.class);
-            return getAllBooks.getResultList();
+            return session.createQuery("FROM Book", Book.class).getResultList();
         } catch (Exception ex) {
             throw new DataProcessingException("Can`t get all books from database", ex);
         }
