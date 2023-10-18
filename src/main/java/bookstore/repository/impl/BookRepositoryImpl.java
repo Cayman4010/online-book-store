@@ -1,9 +1,11 @@
 package bookstore.repository.impl;
 
 import bookstore.exception.DataProcessingException;
+import bookstore.exception.EntityNotFoundException;
 import bookstore.model.Book;
 import bookstore.repository.BookRepository;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -42,7 +44,16 @@ public class BookRepositoryImpl implements BookRepository {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("FROM Book", Book.class).getResultList();
         } catch (Exception ex) {
-            throw new DataProcessingException("Can`t get all books from database", ex);
+            throw new EntityNotFoundException("Can`t get all books from database", ex);
+        }
+    }
+
+    @Override
+    public Optional<Book> findById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return Optional.ofNullable(session.find(Book.class, id));
+        } catch (Exception ex) {
+            throw new EntityNotFoundException("Can't find book by id " + id, ex);
         }
     }
 }
