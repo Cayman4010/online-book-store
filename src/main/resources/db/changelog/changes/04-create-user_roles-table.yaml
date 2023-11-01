@@ -9,17 +9,6 @@ databaseChangeLog:
               - column:
                   name: user_id
                   type: bigint
-                  constraints:
-                    primaryKey: true
-                    nullable: false
               - column:
-                  name: role_name
-                  type: varchar(255)
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-        - addForeignKeyConstraint:
-            baseTableName: user_roles
-            baseColumnNames: user_id
-            referencedTableName: users
-            referencedColumnName: id
+                  name: role_id
+                  type: bigint
