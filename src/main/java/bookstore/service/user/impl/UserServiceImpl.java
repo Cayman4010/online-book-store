@@ -1,6 +1,6 @@
 package bookstore.service.user.impl;
 
-import bookstore.dto.user.UserRegistrationRequest;
+import bookstore.dto.user.UserRegistrationRequestDto;
 import bookstore.dto.user.UserResponseDto;
 import bookstore.exception.RegistrationException;
 import bookstore.mapper.UserMapper;
@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public UserResponseDto register(UserRegistrationRequest request) throws RegistrationException {
+    public UserResponseDto register(UserRegistrationRequestDto request) throws RegistrationException {
         if (userRepository.findByEmail(request.email()).isPresent()) {
             throw new RegistrationException("Unable to complete registration");
         }
