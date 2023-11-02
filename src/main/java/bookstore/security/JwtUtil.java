@@ -52,7 +52,7 @@ public class JwtUtil {
                     .parseSignedClaims(token);
             return !claimsJws.getPayload().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException ex) {
-            throw new JwtException("Token is expired or invalid");
+            throw new JwtException("Token is expired or invalid", ex);
         }
     }
 }
