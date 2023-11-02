@@ -1,9 +1,11 @@
 package bookstore.dto.user;
 
+import bookstore.validation.FieldMatch;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+@FieldMatch
 public record UserRegistrationRequestDto(
         @NotBlank
         @Email
