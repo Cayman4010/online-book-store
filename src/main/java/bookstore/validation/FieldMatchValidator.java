@@ -9,6 +9,7 @@ public class FieldMatchValidator implements ConstraintValidator<FieldMatch,
     @Override
     public boolean isValid(UserRegistrationRequestDto requestDto,
                            ConstraintValidatorContext constraintValidatorContext) {
-        return requestDto.password().equals(requestDto.repeatPassword());
+        return requestDto.password() != null
+                && requestDto.password().equals(requestDto.repeatPassword());
     }
 }
