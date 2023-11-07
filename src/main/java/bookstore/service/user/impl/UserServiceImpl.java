@@ -4,7 +4,7 @@ import bookstore.dto.user.UserRegistrationRequestDto;
 import bookstore.dto.user.UserResponseDto;
 import bookstore.exception.RegistrationException;
 import bookstore.mapper.UserMapper;
-import bookstore.model.RoleName;
+import bookstore.model.Role;
 import bookstore.model.User;
 import bookstore.repository.RoleRepository;
 import bookstore.repository.UserRepository;
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
         }
         User user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(request.password()));
-        user.setRoles(Collections.singleton(roleRepository.findByName(RoleName.USER)));
+        user.setRoles(Collections.singleton(roleRepository.findByName(Role.RoleName.ROLE_USER)));
         return userMapper.toUserResponse(userRepository.save(user));
     }
 }
