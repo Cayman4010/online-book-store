@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BookController {
     private final BookService bookService;
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping
     @Operation(summary = "Get all books",
             description = "Get a list of all available books")
@@ -47,7 +47,7 @@ public class BookController {
         return bookService.save(requestDto);
     }
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/{id}")
     @Operation(summary = "Get a book by id", description = "Get a book by id")
     public BookDto getBookById(@PathVariable @Positive Long id) {
