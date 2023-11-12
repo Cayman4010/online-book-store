@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Query("SELECT b FROM Book b JOIN FETCH b.categories c WHERE c.id = :id")
-    List<Book> findAllByCategoryId(Long categoryId);
+    List<Book> findAllByCategoryId(Long id);
 }

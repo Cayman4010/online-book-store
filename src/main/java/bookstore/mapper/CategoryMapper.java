@@ -1,9 +1,7 @@
 package bookstore.mapper;
 
-import bookstore.dto.book.CreateBookRequestDto;
 import bookstore.dto.category.CategoryDto;
 import bookstore.dto.category.CreateCategoryRequestDto;
-import bookstore.model.Book;
 import bookstore.model.Category;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.InjectionStrategy;
@@ -19,7 +17,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface CategoryMapper {
     CategoryDto toDto(Category category);
 
-    Category toCategory(CategoryDto categoryDTO);
+    Category toCategory(CategoryDto categoryDto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateCategory(CreateCategoryRequestDto requestDto, @MappingTarget Category category);
