@@ -20,13 +20,13 @@ import org.hibernate.annotations.Where;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column(nullable = false, unique = true)
-    String name;
+    private String name;
 
-    String description;
+    private String description;
 
     @Column(nullable = false)
-    boolean isDeleted = false;
+    private boolean isDeleted = false;
 }
