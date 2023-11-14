@@ -12,6 +12,7 @@ import jakarta.validation.constraints.Positive;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -46,7 +47,7 @@ public class CategoryController {
     @Operation(summary = "Get all categories",
             description = "Get a list of all available categories")
     @GetMapping
-    public List<CategoryDto> getAll(Pageable pageable) {
+    public List<CategoryDto> getAll(@PageableDefault Pageable pageable) {
         return categoryService.findAll(pageable);
     }
 
