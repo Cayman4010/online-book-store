@@ -32,5 +32,6 @@ public class CartItem {
     @Column(nullable = false)
     private int quantity;
 
+    @Column(nullable = false)
     private boolean isDeleted = false;
 }
