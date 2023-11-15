@@ -34,7 +34,4 @@ public class ShoppingCart {
     @OneToMany(mappedBy = "shoppingCart", orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_item_id")
     private Set<CartItem> cartItems = new HashSet<>();
-
-    @Column(nullable = false)
-    private boolean isDeleted = false;
 }
