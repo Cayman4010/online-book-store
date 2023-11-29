@@ -11,7 +11,7 @@ import org.mapstruct.NullValueCheckStrategy;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
         implementationPackage = "<PACKAGE_NAME>.impl",
-        uses = UserMapper.class)
+        uses = BookMapper.class)
 public interface CartItemMapper {
     @Mapping(source = "book.id", target = "bookId")
     @Mapping(source = "book.title", target = "bookTitle")

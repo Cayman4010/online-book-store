@@ -1,11 +1,11 @@
 package bookstore.dto.shoppingcart;
 
-import bookstore.model.CartItem;
+import bookstore.dto.cartitem.CartItemDto;
 import java.util.Set;
 
 public record ShoppingCartDto(
         Long id,
         Long userId,
-        Set<CartItem> cartItems
+        Set<CartItemDto> cartItems
 ) {
 }
