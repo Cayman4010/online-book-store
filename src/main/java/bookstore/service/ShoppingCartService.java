@@ -1,7 +1,9 @@
 package bookstore.service;
 
-import bookstore.dto.cartItem.CreateRequestCartItemDto;
-import bookstore.dto.shoppingCart.ShoppingCartDto;
+import bookstore.dto.cartitem.CartItemDto;
+import bookstore.dto.cartitem.CreateRequestCartItemDto;
+import bookstore.dto.cartitem.UpdateCartItemRequestDto;
+import bookstore.dto.shoppingcart.ShoppingCartDto;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -10,7 +12,7 @@ public interface ShoppingCartService {
 
     ShoppingCartDto addCartItemToCart(Long id, CreateRequestCartItemDto requestCartItemDto);
 
-    ShoppingCartDto updateQuantity(Long id, Long cartItemId, int quantity);
+    CartItemDto updateQuantity(Long id, Long cartItemId, UpdateCartItemRequestDto requestDto);
 
     ShoppingCartDto deleteCartItem(Long id, Long cartItemId);
 }

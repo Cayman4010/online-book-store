@@ -9,6 +9,7 @@ databaseChangeLog:
               - column:
                   name: id
                   type: bigint
+                  autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -23,7 +24,7 @@ databaseChangeLog:
                   name: book_id
                   type: bigint
                   constraints:
-                    foreignKeyName: fk_book_id
+                    foreignKeyName: fk_cart_items_book_id
                     references: books(id)
                     nullable: false
               - column:

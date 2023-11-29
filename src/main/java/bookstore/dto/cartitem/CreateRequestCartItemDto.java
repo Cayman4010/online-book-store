@@ -1,13 +1,13 @@
-package bookstore.dto.cartItem;
+package bookstore.dto.cartitem;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public record CreateRequestCartItemDto(
-        @NotBlank @Positive
+        @NotNull @Positive
         Long bookId,
 
-        @NotBlank @Positive
+        @NotNull @Positive
         int quantity
 ) {
 }

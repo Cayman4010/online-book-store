@@ -1,7 +1,6 @@
-package bookstore.dto.shoppingCart;
+package bookstore.dto.shoppingcart;
 
 import bookstore.model.CartItem;
-
 import java.util.Set;
 
 public record ShoppingCartDto(

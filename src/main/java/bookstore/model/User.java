@@ -47,6 +47,7 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String lastName;
 
+    @Column
     private String shippingAddress;
 
     @Column(nullable = false)
@@ -61,7 +62,7 @@ public class User implements UserDetails {
     private Set<Role> roles = new HashSet<>();
 
     @OneToOne(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL,
-    fetch = FetchType.LAZY, optional = false)
+            fetch = FetchType.LAZY, optional = false)
     private ShoppingCart shoppingCart;
 
     @Override
