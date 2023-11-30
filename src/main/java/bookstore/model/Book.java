@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -60,7 +61,11 @@ public class Book {
     )
     private Set<Category> categories = new HashSet<>();
 
-    @OneToMany(mappedBy = "book", orphanRemoval = true, cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "book", orphanRemoval = true,
+            cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CartItem> cartItems = new ArrayList<>();
+
+    @OneToMany(mappedBy = "book", orphanRemoval = true,
+            cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<OrderItem> orderItem;
 }
