@@ -5,6 +5,7 @@ import bookstore.dto.orderItem.OrderItemDto;
 import bookstore.model.Order;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 
 @Mapper(componentModel = "spring",
@@ -12,7 +13,8 @@ import org.mapstruct.NullValueCheckStrategy;
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
         implementationPackage = "<PACKAGE_NAME>.impl")
 public interface OrderMapper {
-    Order toOrder(OrderItemDto orderItemDto);
+    Order toOrder(OrderDto orderDto);
 
-    OrderDto toDto(OrderItemDto orderItemDto);
+    @Mapping(source = "user.id", target = "userId")
+    OrderDto toDto(Order order);
 }

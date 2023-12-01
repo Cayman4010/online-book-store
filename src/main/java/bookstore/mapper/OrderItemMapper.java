@@ -1,9 +1,11 @@
 package bookstore.mapper;
 
 import bookstore.dto.orderItem.OrderItemDto;
+import bookstore.model.CartItem;
 import bookstore.model.OrderItem;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 
 @Mapper(componentModel = "spring",
@@ -13,5 +15,9 @@ import org.mapstruct.NullValueCheckStrategy;
 public interface OrderItemMapper {
     OrderItem toOrderItem(OrderItemDto orderItemDto);
 
+    @Mapping(source = "book.id", target = "bookId")
     OrderItemDto toDto(OrderItem orderItem);
+
+    @Mapping(source = "book.price", target = "price")
+    OrderItem toOrderItem(CartItem cartItem);
 }
