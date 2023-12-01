@@ -3,7 +3,7 @@ package bookstore.service.impl;
 import bookstore.dto.order.CreateOrderRequestDto;
 import bookstore.dto.order.OrderDto;
 import bookstore.dto.order.UpdateOrderRequestDto;
-import bookstore.dto.orderItem.OrderItemDto;
+import bookstore.dto.orderitem.OrderItemDto;
 import bookstore.exception.EntityNotFoundException;
 import bookstore.mapper.OrderItemMapper;
 import bookstore.mapper.OrderMapper;
@@ -13,18 +13,16 @@ import bookstore.model.OrderItem;
 import bookstore.model.ShoppingCart;
 import bookstore.model.Status;
 import bookstore.model.User;
-import bookstore.repository.CartItemRepository;
 import bookstore.repository.OrderItemRepository;
 import bookstore.repository.OrderRepository;
 import bookstore.repository.ShoppingCartRepository;
 import bookstore.service.OrderService;
+import bookstore.service.ShoppingCartService;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import bookstore.service.ShoppingCartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -92,7 +90,7 @@ public class OrderServiceImpl implements OrderService {
 
     private User getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return  (User) authentication.getPrincipal();
+        return (User) authentication.getPrincipal();
     }
 
     private ShoppingCart getShoppingCart() {
@@ -105,12 +103,12 @@ public class OrderServiceImpl implements OrderService {
     private Set<OrderItem> createOrderItems(Order order, ShoppingCart shoppingCart) {
         Set<CartItem> cartItems = shoppingCart.getCartItems();
         Set<OrderItem> orderItems = new HashSet<>();
-        for(CartItem cartItem: cartItems) {
+        for (CartItem cartItem: cartItems) {
             OrderItem orderItem = orderItemMapper.toOrderItem(cartItem);
             orderItem.setOrder(order);
             orderItems.add(orderItemRepository.save(orderItem));
-            BigDecimal newTotal = order.getTotal()
-                    .add(orderItem.getPrice().multiply(BigDecimal.valueOf(orderItem.getQuantity())));
+            BigDecimal newTotal = order.getTotal().add(
+                    orderItem.getPrice().multiply(BigDecimal.valueOf(orderItem.getQuantity())));
             order.setTotal(newTotal);
         }
         return orderItems;

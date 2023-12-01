@@ -3,7 +3,7 @@ package bookstore.controller;
 import bookstore.dto.order.CreateOrderRequestDto;
 import bookstore.dto.order.OrderDto;
 import bookstore.dto.order.UpdateOrderRequestDto;
-import bookstore.dto.orderItem.OrderItemDto;
+import bookstore.dto.orderitem.OrderItemDto;
 import bookstore.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

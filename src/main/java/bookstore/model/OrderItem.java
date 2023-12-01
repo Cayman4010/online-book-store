@@ -24,19 +24,19 @@ import org.hibernate.annotations.Where;
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "order_id", nullable = false)
-    Order order;
+    private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "book_id", nullable = false)
-    Book book;
+    private Book book;
 
     @Column(nullable = false)
-    int quantity;
+    private int quantity;
 
     @Column(nullable = false)
-    BigDecimal price;
+    private BigDecimal price;
 }

@@ -1,8 +1,6 @@
 package bookstore.dto.order;
 
-import bookstore.dto.orderItem.OrderItemDto;
-import bookstore.model.OrderItem;
-
+import bookstore.dto.orderitem.OrderItemDto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;

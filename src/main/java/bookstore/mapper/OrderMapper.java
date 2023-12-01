@@ -1,7 +1,6 @@
 package bookstore.mapper;
 
 import bookstore.dto.order.OrderDto;
-import bookstore.dto.orderItem.OrderItemDto;
 import bookstore.model.Order;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

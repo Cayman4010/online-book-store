@@ -3,7 +3,7 @@ package bookstore.service;
 import bookstore.dto.order.CreateOrderRequestDto;
 import bookstore.dto.order.OrderDto;
 import bookstore.dto.order.UpdateOrderRequestDto;
-import bookstore.dto.orderItem.OrderItemDto;
+import bookstore.dto.orderitem.OrderItemDto;
 import java.util.Set;
 
 public interface OrderService {

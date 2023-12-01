@@ -16,7 +16,6 @@ import bookstore.repository.CartItemRepository;
 import bookstore.repository.ShoppingCartRepository;
 import bookstore.repository.UserRepository;
 import bookstore.service.ShoppingCartService;
-
 import java.util.Collections;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

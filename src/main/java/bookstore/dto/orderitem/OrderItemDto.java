@@ -1,6 +1,6 @@
-package bookstore.dto.orderItem;
+package bookstore.dto.orderitem;
 
-public record OrderItemDto (
+public record OrderItemDto(
         Long id,
         Long bookId,
         int quantity
