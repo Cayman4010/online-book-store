@@ -16,7 +16,6 @@ import bookstore.repository.CartItemRepository;
 import bookstore.repository.ShoppingCartRepository;
 import bookstore.repository.UserRepository;
 import bookstore.service.ShoppingCartService;
-import java.util.Collections;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -76,12 +75,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return findById(id);
     }
 
+    @Transactional
     @Override
     public void emptyCart(ShoppingCart shoppingCart) {
-        shoppingCart.setCartItems(Collections.emptySet());
-        cartItemRepository.deleteAllByShoppingCartId(shoppingCart.getId());
+        cartItemRepository.deleteAll(shoppingCart.getCartItems());
     }
 
+    @Transactional
     public ShoppingCart createShoppingCart(Long userId) {
         ShoppingCart shoppingCart = new ShoppingCart();
         User user = userRepository.findById(userId).orElseThrow(

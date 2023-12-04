@@ -51,7 +51,7 @@ public class OrderController {
             description = "Update order status")
     @PreAuthorize("hasRole('ADMIN')")
     public OrderDto updateOrderStatus(@PathVariable @Positive Long orderId,
-                                      UpdateOrderRequestDto requestDto) {
+                                      @Valid @RequestBody UpdateOrderRequestDto requestDto) {
         return orderService.updateOrder(orderId, requestDto);
     }
 
@@ -67,7 +67,8 @@ public class OrderController {
     @Operation(summary = "Get an order item from an order",
             description = "Get an specific order item from an specific order")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public OrderItemDto getOrderItemByIdAndOrderId(Long orderId, Long itemId) {
+    public OrderItemDto getOrderItemByIdAndOrderId(@PathVariable @Positive Long orderId,
+                                                   @PathVariable @Positive Long itemId) {
         return orderService.getOrderItemFromOrder(orderId, itemId);
     }
 }

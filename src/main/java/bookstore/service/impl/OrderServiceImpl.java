@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +39,7 @@ public class OrderServiceImpl implements OrderService {
     private final ShoppingCartRepository shoppingCartRepository;
     private final ShoppingCartService shoppingCartService;
 
+    @Transactional
     @Override
     public OrderDto createOrder(CreateOrderRequestDto requestDto) {
         Order order = new Order();
@@ -60,11 +62,12 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toSet());
     }
 
+    @Transactional
     @Override
     public OrderDto updateOrder(Long orderId, UpdateOrderRequestDto requestDto) {
         Order order = getOrder(orderId);
         order.setStatus(Status.valueOf(requestDto.status()));
-        return orderMapper.toDto(order);
+        return orderMapper.toDto(orderRepository.save(order));
     }
 
     @Override
@@ -75,17 +78,37 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toSet());
     }
 
-    private Order getOrder(Long orderId) {
-        return orderRepository.findById(orderId).orElseThrow(()
-                -> new EntityNotFoundException("Cant find order by id" + orderId));
-    }
-
     @Override
     public OrderItemDto getOrderItemFromOrder(Long itemId, Long orderId) {
-        OrderItem orderItem = orderItemRepository.findByIdAndOrder_Id(itemId, orderId).orElseThrow(
+        OrderItem orderItem = orderItemRepository.findByIdAndOrder_Id(orderId, itemId).orElseThrow(
                 () -> new EntityNotFoundException("Can`t find order item by id " + itemId
                 + " and order id " + orderId));
         return orderItemMapper.toDto(orderItem);
+    }
+
+    @Transactional
+    public Set<OrderItem> createOrderItems(Order order, ShoppingCart shoppingCart) {
+        Set<CartItem> cartItems = shoppingCart.getCartItems();
+        Set<OrderItem> orderItems = new HashSet<>();
+        BigDecimal newTotal = BigDecimal.ZERO;
+        Order savedOrder = orderRepository.save(order);
+        for (CartItem cartItem: cartItems) {
+            OrderItem orderItem = orderItemMapper.toOrderItem(cartItem);
+            orderItem.setOrder(savedOrder);
+            OrderItem savedOrderItem = orderItemRepository.save(orderItem);
+            orderItems.add(savedOrderItem);
+            BigDecimal itemTotal = savedOrderItem.getPrice()
+                    .multiply(BigDecimal.valueOf(savedOrderItem.getQuantity()));
+            newTotal = newTotal.add(itemTotal);
+        }
+        savedOrder.getOrderItems().addAll(orderItems);
+        savedOrder.setTotal(order.getTotal().add(newTotal));
+        return orderItems;
+    }
+
+    private Order getOrder(Long orderId) {
+        return orderRepository.findById(orderId).orElseThrow(()
+                -> new EntityNotFoundException("Cant find order by id" + orderId));
     }
 
     private User getUser() {
@@ -97,20 +120,6 @@ public class OrderServiceImpl implements OrderService {
         Long userId = getUser().getId();
         return shoppingCartRepository.findById(userId).orElseThrow(()
                 -> new EntityNotFoundException("Can`t find shopping cart for user with id "
-        + userId));
-    }
-
-    private Set<OrderItem> createOrderItems(Order order, ShoppingCart shoppingCart) {
-        Set<CartItem> cartItems = shoppingCart.getCartItems();
-        Set<OrderItem> orderItems = new HashSet<>();
-        for (CartItem cartItem: cartItems) {
-            OrderItem orderItem = orderItemMapper.toOrderItem(cartItem);
-            orderItem.setOrder(order);
-            orderItems.add(orderItemRepository.save(orderItem));
-            BigDecimal newTotal = order.getTotal().add(
-                    orderItem.getPrice().multiply(BigDecimal.valueOf(orderItem.getQuantity())));
-            order.setTotal(newTotal);
-        }
-        return orderItems;
+                + userId));
     }
 }

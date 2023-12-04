@@ -9,7 +9,7 @@ public record OrderDto(
         Long id,
         Long userId,
         Set<OrderItemDto> orderItems,
-        LocalDateTime orderTime,
+        LocalDateTime orderDate,
         BigDecimal total,
         String status
 ) {
