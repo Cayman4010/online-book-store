@@ -10,7 +10,8 @@ import org.mapstruct.NullValueCheckStrategy;
 @Mapper(componentModel = "spring",
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
-        implementationPackage = "<PACKAGE_NAME>.impl")
+        implementationPackage = "<PACKAGE_NAME>.impl",
+        uses = OrderItemMapper.class)
 public interface OrderMapper {
     Order toOrder(OrderDto orderDto);
 
