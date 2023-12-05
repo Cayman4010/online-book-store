@@ -54,8 +54,8 @@ public class ShoppingCartController {
     @Operation(summary = "Delete a cart item by id",
             description = "Delete a cart item by id")
     @DeleteMapping("/cart-items/{cartItemId}")
-    public ShoppingCartDto deleteCartItem(@Positive @PathVariable Long cartItemId) {
-        return shoppingCartService.deleteCartItem(getUserId(), cartItemId);
+    public void deleteCartItem(@Positive @PathVariable Long cartItemId) {
+        shoppingCartService.deleteCartItem(cartItemId);
     }
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
@@ -69,7 +69,6 @@ public class ShoppingCartController {
 
     private static Long getUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal();
-        return user.getId();
+        return ((User) authentication.getPrincipal()).getId();
     }
 }
