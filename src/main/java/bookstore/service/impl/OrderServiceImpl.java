@@ -11,7 +11,6 @@ import bookstore.model.CartItem;
 import bookstore.model.Order;
 import bookstore.model.OrderItem;
 import bookstore.model.ShoppingCart;
-import bookstore.model.Status;
 import bookstore.model.User;
 import bookstore.repository.OrderItemRepository;
 import bookstore.repository.OrderRepository;
@@ -42,16 +41,11 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public OrderDto createOrder(CreateOrderRequestDto requestDto) {
-        Order order = new Order();
-        order.setUser(getUser());
-        order.setStatus(Status.PENDING);
-        order.setTotal(BigDecimal.ZERO);
-        order.setOrderDate(LocalDateTime.now());
-        order.setShippingAddress(requestDto.shippingAddress());
+        Order order = getOrder(requestDto);
         ShoppingCart shoppingCart = getShoppingCart();
         Set<OrderItem> orderItems = createOrderItems(order, shoppingCart);
         order.setOrderItems(orderItems);
-        shoppingCartService.emptyCart(shoppingCart);
+        shoppingCartService.clearShoppingCart(shoppingCart);
         return orderMapper.toDto(orderRepository.save(order));
     }
 
@@ -66,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto updateOrder(Long orderId, UpdateOrderRequestDto requestDto) {
         Order order = getOrder(orderId);
-        order.setStatus(Status.valueOf(requestDto.status()));
+        order.setStatus(Order.Status.valueOf(requestDto.status()));
         return orderMapper.toDto(orderRepository.save(order));
     }
 
@@ -86,24 +80,14 @@ public class OrderServiceImpl implements OrderService {
         return orderItemMapper.toDto(orderItem);
     }
 
-    @Transactional
-    public Set<OrderItem> createOrderItems(Order order, ShoppingCart shoppingCart) {
-        Set<CartItem> cartItems = shoppingCart.getCartItems();
-        Set<OrderItem> orderItems = new HashSet<>();
-        BigDecimal newTotal = BigDecimal.ZERO;
-        Order savedOrder = orderRepository.save(order);
-        for (CartItem cartItem: cartItems) {
-            OrderItem orderItem = orderItemMapper.toOrderItem(cartItem);
-            orderItem.setOrder(savedOrder);
-            OrderItem savedOrderItem = orderItemRepository.save(orderItem);
-            orderItems.add(savedOrderItem);
-            BigDecimal itemTotal = savedOrderItem.getPrice()
-                    .multiply(BigDecimal.valueOf(savedOrderItem.getQuantity()));
-            newTotal = newTotal.add(itemTotal);
-        }
-        savedOrder.getOrderItems().addAll(orderItems);
-        savedOrder.setTotal(order.getTotal().add(newTotal));
-        return orderItems;
+    private Order getOrder(CreateOrderRequestDto requestDto) {
+        Order order = new Order();
+        order.setUser(getUser());
+        order.setStatus(Order.Status.PENDING);
+        order.setTotal(BigDecimal.ZERO);
+        order.setOrderDate(LocalDateTime.now());
+        order.setShippingAddress(requestDto.shippingAddress());
+        return order;
     }
 
     private Order getOrder(Long orderId) {
@@ -121,5 +105,24 @@ public class OrderServiceImpl implements OrderService {
         return shoppingCartRepository.findById(userId).orElseThrow(()
                 -> new EntityNotFoundException("Can`t find shopping cart for user with id "
                 + userId));
+    }
+
+    private Set<OrderItem> createOrderItems(Order order, ShoppingCart shoppingCart) {
+        Set<CartItem> cartItems = shoppingCart.getCartItems();
+        Set<OrderItem> orderItems = new HashSet<>();
+        BigDecimal newTotal = BigDecimal.ZERO;
+        Order savedOrder = orderRepository.save(order);
+        for (CartItem cartItem: cartItems) {
+            OrderItem orderItem = orderItemMapper.toOrderItem(cartItem);
+            orderItem.setOrder(savedOrder);
+            OrderItem savedOrderItem = orderItemRepository.save(orderItem);
+            orderItems.add(savedOrderItem);
+            BigDecimal itemTotal = savedOrderItem.getPrice()
+                    .multiply(BigDecimal.valueOf(savedOrderItem.getQuantity()));
+            newTotal = newTotal.add(itemTotal);
+        }
+        savedOrder.getOrderItems().addAll(orderItems);
+        savedOrder.setTotal(order.getTotal().add(newTotal));
+        return orderItems;
     }
 }

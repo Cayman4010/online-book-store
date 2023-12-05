@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    @EntityGraph(attributePaths = {"orderItems"})
+    @EntityGraph(attributePaths = "orderItems")
     Set<Order> findByUserId(Long id);
 
     @EntityGraph(attributePaths = "orderItems")

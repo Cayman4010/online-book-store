@@ -53,6 +53,12 @@ public class Order {
     @OneToMany(mappedBy = "order", orphanRemoval = true, cascade = CascadeType.ALL)
     private Set<OrderItem> orderItems = new HashSet<>();
 
-    @Column
+    @Column(nullable = false)
     private boolean isDeleted = false;
+
+    public enum Status {
+        PENDING,
+        DELIVERED,
+        COMPLETED
+    }
 }

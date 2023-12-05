@@ -27,13 +27,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Validated
-@RequestMapping(value = "/orders")
+@RequestMapping("/orders")
 public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public OrderDto createOrder(@RequestBody @Valid CreateOrderRequestDto requestDto) {
         return orderService.createOrder(requestDto);
     }
@@ -41,7 +41,7 @@ public class OrderController {
     @GetMapping
     @Operation(summary = "Get all orders",
             description = "Get a set of orders of user")
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public Set<OrderDto> getOrdersByUserId() {
         return orderService.getOrders();
     }
@@ -58,7 +58,7 @@ public class OrderController {
     @GetMapping("/{orderId}/items")
     @Operation(summary = "Get orders from an order",
             description = "Get a set of order items from an specific order")
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public Set<OrderItemDto> getOrderItemsFromOrder(@PathVariable @Positive Long orderId) {
         return orderService.getOrderItemsByOrderId(orderId);
     }
@@ -66,7 +66,7 @@ public class OrderController {
     @GetMapping("/{orderId}/items/{itemId}")
     @Operation(summary = "Get an order item from an order",
             description = "Get an specific order item from an specific order")
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public OrderItemDto getOrderItemByIdAndOrderId(@PathVariable @Positive Long orderId,
                                                    @PathVariable @Positive Long itemId) {
         return orderService.getOrderItemFromOrder(orderId, itemId);
