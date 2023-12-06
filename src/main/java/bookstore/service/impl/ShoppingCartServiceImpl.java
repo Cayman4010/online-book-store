@@ -16,7 +16,6 @@ import bookstore.repository.CartItemRepository;
 import bookstore.repository.ShoppingCartRepository;
 import bookstore.repository.UserRepository;
 import bookstore.service.ShoppingCartService;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,12 +32,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCartDto findById(Long id) {
-        Optional<ShoppingCart> shoppingCart = shoppingCartRepository.findById(id);
-        if (shoppingCart.isPresent()) {
-            return shoppingCartMapper.toDto(shoppingCart.get());
-        } else {
-            throw new EntityNotFoundException("Can`t find a shopping cart for user with id " + id);
-        }
+        return shoppingCartRepository.findById(id)
+                .map(shoppingCartMapper::toDto)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Can't find a shopping cart for user with id " + id));
     }
 
     @Transactional
@@ -49,10 +46,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Book book = bookRepository.findById(requestCartItemDto.bookId()).orElseThrow(()
                 -> new EntityNotFoundException("Can`t find book by id "
                 + requestCartItemDto.bookId()));
-        CartItem cartItem = new CartItem();
-        cartItem.setBook(book);
-        cartItem.setQuantity(requestCartItemDto.quantity());
-        cartItem.setShoppingCart(shoppingCart);
+        CartItem cartItem = createCartItem(requestCartItemDto, book, shoppingCart);
         cartItemRepository.save(cartItem);
         shoppingCart.getCartItems().add(cartItem);
         return shoppingCartMapper.toDto(shoppingCart);
@@ -70,9 +64,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Transactional
     @Override
-    public ShoppingCartDto deleteCartItem(Long id, Long cartItemId) {
+    public void deleteCartItem(Long cartItemId) {
         cartItemRepository.deleteById(cartItemId);
-        return findById(id);
     }
 
     @Transactional
@@ -80,12 +73,20 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         cartItemRepository.deleteAll(shoppingCart.getCartItems());
     }
 
-    @Transactional
-    public ShoppingCart createShoppingCart(Long userId) {
+    private ShoppingCart createShoppingCart(Long userId) {
         ShoppingCart shoppingCart = new ShoppingCart();
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new EntityNotFoundException("Can`t find user by id + " + userId));
         shoppingCart.setUser(user);
         return shoppingCartRepository.save(shoppingCart);
+    }
+
+    private CartItem createCartItem(CreateRequestCartItemDto requestCartItemDto,
+                                    Book book, ShoppingCart shoppingCart) {
+        CartItem cartItem = new CartItem();
+        cartItem.setBook(book);
+        cartItem.setQuantity(requestCartItemDto.quantity());
+        cartItem.setShoppingCart(shoppingCart);
+        return cartItem;
     }
 }
