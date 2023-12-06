@@ -1,12 +1,12 @@
-# <div align="center">Bookstore Application</div>
+# <div align="center">Online Bookstore Application</div>
 
 
 <p align="center">
-    <img width="500" src="https://miro.medium.com/v2/resize:fit:2000/format:webp/1*6S06Up-IyFSxxljpSJa_YQ.png" alt="Bookstore image">
+    <img width="430" src="https://w7.pngwing.com/pngs/202/613/png-transparent-books-school-education-stack-icon-library-pile-college-science-business.png" alt="Bookstore image">
 </p>
 
 
-Welcome to the Bookstore Application! </br>
+Welcome to the Online Bookstore Application! </br>
 This project aims to provide a seamless platform for managing 📘books, 📚categories, 📦user orders, and 🛒shopping carts.
 
 ## Technologies Used
