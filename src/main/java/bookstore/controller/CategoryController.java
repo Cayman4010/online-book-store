@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Validated
-@RequestMapping(value = "/categories")
+@RequestMapping("/categories")
 public class CategoryController {
     private final CategoryService categoryService;
     private final BookService bookService;
@@ -43,7 +43,7 @@ public class CategoryController {
         return categoryService.save(categoryDto);
     }
 
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Get all categories",
             description = "Get a list of all available categories")
     @GetMapping
@@ -51,7 +51,7 @@ public class CategoryController {
         return categoryService.findAll(pageable);
     }
 
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Get a category by id", description = "Get a category by id")
     @GetMapping("/{id}")
     public CategoryDto getCategoryById(@PathVariable @Positive Long id) {
@@ -76,7 +76,7 @@ public class CategoryController {
         categoryService.deleteById(id);
     }
 
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Get all books by category id",
             description = "Get a list of all books by category id")
     @GetMapping(value = "/{id}/books")
