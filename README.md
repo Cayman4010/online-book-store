@@ -6,10 +6,24 @@
 </p>
 
 
-Welcome to the Online Bookstore Application! </br>
-This project aims to provide a seamless platform for managing 📘books, 📚categories, 📦user orders, and 🛒shopping carts.
+👋Welcome to the Online Bookstore Application! </br> 
+This platform was developed to simplify book management, category organization, and user order handling. My goal is to provide an intuitive interface for book enthusiasts, enabling easy exploration of diverse genres and hassle-free order placement.
+
+
+The Online Bookstore Application offers a range of functionalities, including:
+
+1. **📘Book Management**: Allows administrators to add, edit, and remove books from the inventory. Users can browse books by category and view detailed information about each book.
+
+2. **📚Category Organization**: Enables the categorization of books into various genres or classifications, aiding users in discovering books based on their preferences.
+
+3. **📦User Order Handling**: Facilitates the ordering process, from cart creation to order placement and status tracking. Users can conveniently manage their orders through their accounts.
+
+4. **🛒Shopping Cart Management**: Provides users with a personalized shopping cart, allowing the addition, removal, and modification of book items before checkout.
+
+5. **👤User Registration and Authentication**: Allows users to create accounts, log in securely, and maintain their profiles, enhancing personalized experiences.
 
 ## Technologies Used
+- **☕️ JDK 17**: Embracing the functionalities and enhancements introduced in Java 17.
 - **🍃 Spring Boot**: Backend development framework.
 - **🛡️ Spring Security**: Authentication and authorization.
 - **💾 Spring Data JPA**: Data persistence and database operations.
@@ -60,7 +74,7 @@ This project aims to provide a seamless platform for managing 📘books, 📚cat
 ## Setup and Usage
 
 ### Requirements
-- JDK 8 or higher ☕️
+- JDK 17 or higher ☕️
 - Maven 🚀
 
 ### Steps to Run
@@ -74,17 +88,30 @@ This project aims to provide a seamless platform for managing 📘books, 📚cat
    - User registration 📝
    - Book and category management 📚
    - Shopping cart operations 🛒
+   - Order management 📦
 
-## Challenges Encountered
+## Additional Implemented Features
 
-### Integration of Security
-Implementing secure authentication and authorization using Spring Security was a challenging task, ensuring robust protection for user data. 🔒
+### Integration of Security 🔒
+Successfully integrated Spring Security for user authentication and authorization, ensuring data protection.
 
-### DTO Mapping
-Employing MapStruct for object mapping required meticulous configuration to handle various scenarios and edge cases effectively. 🗺️
+### Advanced DTO Mapping 🗺️
+Utilized MapStruct for precise and comprehensive object mapping, managing various scenarios and edge cases effectively.
+
+### Swagger Integration 📋
+Implemented Swagger for API documentation, simplifying understanding and interaction with endpoints through a user-friendly interface.
+
+### Exception Handling 🚩
+Implemented robust exception handling to provide clear and understandable error messages, ensuring smooth application flow even during unexpected scenarios.
+
+### Query Optimization ⚡
+Focused on query optimization to enhance database performance and reduce response time, ensuring efficient data retrieval.
+
+### Pagination 📖
+Implemented pagination for improved data handling, allowing the presentation of large data sets in manageable chunks for better user experience.
 
 ## Project Summary
 
-The Bookstore Application is dedicated to providing a secure and efficient platform for book management, user engagement, and seamless order processing. We welcome contributions and feedback! 📧
+The Bookstore Application is dedicated to providing a secure and efficient platform for book management, user engagement, and seamless order processing. I welcome contributions and feedback! 📧
 
 For inquiries or support, feel free to reach out at chernyonkov.oleksandr@gmail.com
