@@ -37,7 +37,7 @@ public class CategoryController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Create a new book", description = "Create a new book")
+    @Operation(summary = "Create a new category", description = "Create a new category")
     @PostMapping
     public CategoryDto createCategory(@RequestBody @Valid CategoryDto categoryDto) {
         return categoryService.save(categoryDto);

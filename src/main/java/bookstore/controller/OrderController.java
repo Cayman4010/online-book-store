@@ -33,6 +33,8 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Create a new order",
+            description = "Create a new order")
     @PreAuthorize("hasRole('USER')")
     public OrderDto createOrder(@RequestBody @Valid CreateOrderRequestDto requestDto) {
         return orderService.createOrder(requestDto);
