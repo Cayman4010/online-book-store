@@ -33,6 +33,7 @@ The Online Bookstore Application offers a range of functionalities, including:
 - **🔄Liquibase**: Database schema version control.
 - **🐬 MySQL**: Relational database management system.
 - **🌶️ Lombok️**: Reducing boilerplate code in Java classes.
+- **🐳 Docker**: Containerization platform for application deployment and management.
 
 ## Functionality Overview
 
@@ -76,11 +77,16 @@ The Online Bookstore Application offers a range of functionalities, including:
 ### Requirements
 - JDK 17 or higher ☕️
 - Maven 🚀
+- Docker 🐳
 
 ### Steps to Run
 1. Clone the repository 📥
 2. Configure `application.properties` with your database settings 🛠️
-3. Run `mvn spring-boot:run` to start the application 💻 
+3. Build the project using Maven: `mvn clean package` 🚀
+4. Set up your environment variables in the .env file 🗝️
+5. Build the Docker images: `docker-compose build` 🐳
+6. Run the Docker containers: `docker-compose up` 💻
+7. Access the application at http://localhost:8081 in your browser 🌐
 
 ### API Endpoints
 - Access Swagger UI (`/swagger-ui.html`) to explore and test available endpoints.
