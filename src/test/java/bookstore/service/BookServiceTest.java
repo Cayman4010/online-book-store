@@ -18,7 +18,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -64,7 +63,7 @@ public class BookServiceTest {
         Book book = getBook1();
         Long categoryId = 1L;
         BookDtoWithoutCategoryIds bookDtoWithoutCategoryIds = new BookDtoWithoutCategoryIds(
-                1L, "Dracula", "Bram Stocker", "978-0-553-21277-6", BigDecimal.valueOf(250),
+                1L, "Dracula", "Bram Stoker", "978-0-553-21277-6", BigDecimal.valueOf(250),
                 "Classic vampire story", "cover_dracula.jpg"
         );
 
@@ -135,13 +134,12 @@ public class BookServiceTest {
         assertEquals(expectedBookDto, actualBookDto);
     }
 
-    @NotNull
     private static BookDto getBookDto1() {
         BookDto bookDto = new BookDto();
         Long id = 1L;
         bookDto.setId(id);
         bookDto.setTitle("Dracula");
-        bookDto.setAuthor("Bram Stocker");
+        bookDto.setAuthor("Bram Stoker");
         bookDto.setIsbn("978-0-553-21277-6");
         bookDto.setPrice(BigDecimal.valueOf(250));
         bookDto.setDescription("Classic vampire story");
@@ -150,7 +148,6 @@ public class BookServiceTest {
         return bookDto;
     }
 
-    @NotNull
     private static BookDto getBookDto2() {
         BookDto bookDto = new BookDto();
         Long bookId = 2L;
@@ -166,20 +163,18 @@ public class BookServiceTest {
         return bookDto;
     }
 
-    @NotNull
     private static CreateBookRequestDto getCreateBookRequestDto() {
         return new CreateBookRequestDto("Dracula", "Bram Stoker",
                 "978-0-553-21277-6", BigDecimal.valueOf(250), "Classic vampire story",
                 "cover_dracula.jpg", Set.of(1L));
     }
 
-    @NotNull
     private static Book getBook1() {
         Book book = new Book();
         Long id = 1L;
         book.setId(id);
         book.setTitle("Dracula");
-        book.setAuthor("Bram Stocker");
+        book.setAuthor("Bram Stoker");
         book.setIsbn("978-0-553-21277-6");
         book.setPrice(BigDecimal.valueOf(250));
         book.setDescription("Classic vampire story");
@@ -188,7 +183,6 @@ public class BookServiceTest {
         return book;
     }
 
-    @NotNull
     private static Book getBook2() {
         Book book = new Book();
         book.setId(1L);
@@ -202,7 +196,6 @@ public class BookServiceTest {
         return book;
     }
 
-    @NotNull
     private static Category getCategory() {
         Category horror = new Category();
         horror.setId(1L);
