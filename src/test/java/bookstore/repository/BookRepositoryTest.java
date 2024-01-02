@@ -28,7 +28,7 @@ import org.springframework.test.context.jdbc.Sql;
 public class BookRepositoryTest {
 
     @Autowired
-    BookRepository bookRepository;
+    private BookRepository bookRepository;
 
     @Test
     void findAllByCategoryId_ValidCategoryIdAndExistingBooks_ReturnsBookList() {
