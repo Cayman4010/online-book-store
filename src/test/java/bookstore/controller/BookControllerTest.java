@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -149,6 +148,19 @@ public class BookControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "user")
+    void getBookById_InvalidId_NotFound() throws Exception {
+        Long id = 5L;
+
+        MvcResult mvcResult = mockMvc.perform(
+                        get("/books/{id}", id)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound())
+                .andReturn();
+    }
+
+    @Test
     @WithMockUser(username = "admin", roles = {"ADMIN", "USER"})
     void deleteById_ValidId_Success() throws Exception {
         Long id = 1L;
@@ -165,6 +177,19 @@ public class BookControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isNotFound())
+                .andReturn();
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN", "USER"})
+    void deleteById_InvalidId_NoContent() throws Exception {
+        Long id = 5L;
+
+        mockMvc.perform(
+                        delete("/books/{id}", id)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNoContent())
                 .andReturn();
     }
 
@@ -195,6 +220,22 @@ public class BookControllerTest {
         assertEquals(expected.getDescription(), actual.getDescription());
         assertEquals(expected.getCoverImage(), actual.getCoverImage());
         assertEquals(expected.getCategoryIds(), actual.getCategoryIds());
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    void updateBook_InvalidBookId_NotFound() throws Exception {
+        Long id = 5L;
+        CreateBookRequestDto requestDto = getCreateBookRequestDto();
+        String jsonRequest = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        put("/books/{id}", id)
+                                .content(jsonRequest)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound())
+                .andReturn();
     }
 
     private static CreateBookRequestDto getCreateBookRequestDto() {

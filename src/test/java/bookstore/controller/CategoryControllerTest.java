@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import bookstore.dto.book.BookDtoWithoutCategoryIds;
 import bookstore.dto.category.CategoryDto;
 import bookstore.dto.category.CreateCategoryRequestDto;
-import bookstore.model.Category;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
@@ -131,6 +130,19 @@ public class CategoryControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "user")
+    void getCategoryById_InvalidId_NotFound() throws Exception {
+        Long id = 5L;
+
+        MvcResult mvcResult = mockMvc.perform(
+                        get("/categories/{id}", id)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound())
+                .andReturn();
+    }
+
+    @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void updateCategory_ValidIdAndRequestDto_Success() throws Exception {
         Long id = 2L;
@@ -154,6 +166,22 @@ public class CategoryControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    void updateCategory_InvalidCategoryId_NotFound() throws Exception {
+        Long id = 5L;
+        CreateCategoryRequestDto requestDto = getCreateCategoryRequestDto();
+        String jsonRequest = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        put("/categories/{id}", id)
+                                .content(jsonRequest)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound())
+                .andReturn();
+    }
+
+    @Test
     @WithMockUser(username = "admin", roles = {"ADMIN", "USER"})
     void deleteCategory_ValidId_Success() throws Exception {
         Long id = 1L;
@@ -170,6 +198,19 @@ public class CategoryControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isNotFound())
+                .andReturn();
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    void deleteCategory_InvalidCategoryId_NoContent() throws Exception {
+        Long id = 5L;
+
+        MvcResult mvcResult = mockMvc.perform(
+                        delete("/categories/{id}", id)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNoContent())
                 .andReturn();
     }
 
@@ -208,6 +249,24 @@ public class CategoryControllerTest {
         assertEquals(expected.get(1).price(), actual.get(1).price());
         assertEquals(expected.get(1).coverImage(), actual.get(1).coverImage());
         assertEquals(expected.get(1).description(), actual.get(1).description());
+    }
+
+    @Test
+    @WithMockUser(username = "user")
+    void getBooksByCategoryId_InvalidCategoryId_ReturnsEmptyList() throws Exception {
+        Long categoryId = 5L;
+        List<BookDtoWithoutCategoryIds> expected = List.of();
+
+        MvcResult mvcResult = mockMvc.perform(
+                        get("/categories/{id}/books", categoryId)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+        List<BookDtoWithoutCategoryIds> actual = objectMapper.readValue(
+                mvcResult.getResponse().getContentAsString(), new TypeReference<List<BookDtoWithoutCategoryIds>>() {
+                });
+        assertEquals(expected, actual);
     }
 
     private static CreateCategoryRequestDto getCreateCategoryRequestDto() {
