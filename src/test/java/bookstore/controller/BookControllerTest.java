@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -57,6 +58,7 @@ public class BookControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @DisplayName("Create a book with valid request DTO")
     void createBook_ValidRequestDto_Success() throws Exception {
         CreateBookRequestDto requestDto = getCreateBookRequestDto();
         BookDto expected = getFrankensteinDto();
@@ -84,6 +86,7 @@ public class BookControllerTest {
 
     @Test
     @WithMockUser(username = "user")
+    @DisplayName("Retrieve all books from a valid database")
     void getAll_ValidDatabase_Success() throws Exception {
         BookDto theShiningDto = getTheShiningDto();
         BookDto draculaDto = getDraculaDto();
@@ -124,6 +127,7 @@ public class BookControllerTest {
 
     @Test
     @WithMockUser(username = "user")
+    @DisplayName("Retrieve book by valid ID")
     void getBookById_ValidId_Success() throws Exception {
         Long id = 1L;
         BookDto expected = getTheShiningDto();
@@ -149,6 +153,7 @@ public class BookControllerTest {
 
     @Test
     @WithMockUser(username = "user")
+    @DisplayName("Retrieve book by invalid ID - Not Found")
     void getBookById_InvalidId_NotFound() throws Exception {
         Long id = 5L;
 
@@ -162,6 +167,7 @@ public class BookControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN", "USER"})
+    @DisplayName("Delete book by valid ID")
     void deleteById_ValidId_Success() throws Exception {
         Long id = 1L;
 
@@ -182,6 +188,7 @@ public class BookControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN", "USER"})
+    @DisplayName("Delete book by invalid ID - No Content")
     void deleteById_InvalidId_NoContent() throws Exception {
         Long id = 5L;
 
@@ -195,6 +202,7 @@ public class BookControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @DisplayName("Update book with valid ID and request DTO")
     void updateBook_ValidIdAndRequestDto_Success() throws Exception {
         Long id = 2L;
         CreateBookRequestDto requestDto = getCreateBookRequestDto();
@@ -224,6 +232,7 @@ public class BookControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @DisplayName("Update book with invalid ID - Not Found")
     void updateBook_InvalidBookId_NotFound() throws Exception {
         Long id = 5L;
         CreateBookRequestDto requestDto = getCreateBookRequestDto();

@@ -23,6 +23,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -48,6 +50,7 @@ public class BookServiceTest {
     private CategoryRepository categoryRepository;
 
     @Test
+    @DisplayName("Check saving a valid book")
     void save_ValidBook_ReturnsBookDto() {
         CreateBookRequestDto requestDto = getCreateBookRequestDto();
         Book expectedBook = getBook1();
@@ -64,6 +67,7 @@ public class BookServiceTest {
     }
 
     @Test
+    @DisplayName("Check retrieving book list by valid category ID")
     void findAllByCategoryId_ValidCategoryId_ReturnsBookDtoList() {
         Book book = getBook1();
         Long categoryId = 1L;
@@ -81,6 +85,7 @@ public class BookServiceTest {
     }
 
     @Test
+    @DisplayName("Check retrieving all books from the database")
     void findAll_ValidDatabase_ReturnsBookPage() {
         Book book1 = getBook1();
         Book book2 = getBook2();
@@ -100,6 +105,7 @@ public class BookServiceTest {
     }
 
     @Test
+    @DisplayName("Check behavior of findAll method for an empty database")
     void findAll_EmptyDatabase_ReturnsEmptyPage() {
         PageRequest pageRequest = PageRequest.of(0, 20);
         Page<Book> emptyPage = new PageImpl<>(Collections.emptyList());
@@ -111,6 +117,7 @@ public class BookServiceTest {
     }
 
     @Test
+    @DisplayName("Check retrieving book by valid ID")
     void getById_ValidId_ReturnsBookDto() {
         Long bookId = 1L;
         Book book = getBook1();
@@ -124,6 +131,7 @@ public class BookServiceTest {
     }
 
     @Test
+    @DisplayName("Check throwing EntityNotFoundException for invalid ID in getById method")
     void getById_InvalidId_ThrowsEntityNotFoundException() {
         Long invalidId = 5L;
 
@@ -135,6 +143,7 @@ public class BookServiceTest {
     }
 
     @Test
+    @DisplayName("Check deleting a book by valid ID")
     void deleteById_ValidId_Success() {
         Long bookId = 1L;
         bookService.deleteById(bookId);
@@ -142,6 +151,7 @@ public class BookServiceTest {
     }
 
     @Test
+    @DisplayName("Check updating book by valid ID")
     void updateById_ValidId_ReturnsBookDto() {
         Long bookId = 2L;
         CreateBookRequestDto requestDto = getCreateBookRequestDto();
@@ -162,6 +172,7 @@ public class BookServiceTest {
     }
 
     @Test
+    @DisplayName("Check throwing EntityNotFoundException for invalid ID in updateById method")
     void updateById_InvalidId_ThrowsEntityNotFoundException() {
         Long invalidId = 5L;
 

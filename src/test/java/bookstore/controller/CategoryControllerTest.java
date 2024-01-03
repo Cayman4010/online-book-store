@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -58,6 +59,7 @@ public class CategoryControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @DisplayName("Create a category with valid request DTO")
     void createCategory_ValidRequestDto_Success() throws Exception {
         CreateCategoryRequestDto requestDto = getCreateCategoryRequestDto();
         CategoryDto expected = getFantasyDto();
@@ -81,6 +83,7 @@ public class CategoryControllerTest {
 
     @Test
     @WithMockUser(username = "user")
+    @DisplayName("Retrieve all categories from a valid database")
     void getAll_ValidDatabase_Success() throws Exception {
         CategoryDto horrorDto = getHorrorDto();
         CategoryDto thrillerDto = getThrillerDto();
@@ -111,6 +114,7 @@ public class CategoryControllerTest {
 
     @Test
     @WithMockUser(username = "user")
+    @DisplayName("Retrieve category by valid ID")
     void getCategoryById_ValidId_Success() throws Exception {
         Long id = 1L;
         CategoryDto expected = getHorrorDto();
@@ -131,6 +135,7 @@ public class CategoryControllerTest {
 
     @Test
     @WithMockUser(username = "user")
+    @DisplayName("Retrieve category by invalid ID - Not Found")
     void getCategoryById_InvalidId_NotFound() throws Exception {
         Long id = 5L;
 
@@ -144,6 +149,7 @@ public class CategoryControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @DisplayName("Update category with valid ID and request DTO")
     void updateCategory_ValidIdAndRequestDto_Success() throws Exception {
         Long id = 2L;
         CreateCategoryRequestDto requestDto = getCreateCategoryRequestDto();
@@ -167,6 +173,7 @@ public class CategoryControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @DisplayName("Update category with invalid ID - Not Found")
     void updateCategory_InvalidCategoryId_NotFound() throws Exception {
         Long id = 5L;
         CreateCategoryRequestDto requestDto = getCreateCategoryRequestDto();
@@ -183,6 +190,7 @@ public class CategoryControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN", "USER"})
+    @DisplayName("Delete category by valid ID")
     void deleteCategory_ValidId_Success() throws Exception {
         Long id = 1L;
 
@@ -203,6 +211,7 @@ public class CategoryControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @DisplayName("Delete category by invalid ID - No Content")
     void deleteCategory_InvalidCategoryId_NoContent() throws Exception {
         Long id = 5L;
 
@@ -216,6 +225,7 @@ public class CategoryControllerTest {
 
     @Test
     @WithMockUser(username = "user")
+    @DisplayName("Retrieve books by category ID from a valid database")
     void getBooksByCategoryId_ValidDatabaseAndCategoryId_Success() throws Exception {
         Long categoryId = 1L;
         BookDtoWithoutCategoryIds theShiningDtoWithoutCategoryIds =
@@ -253,6 +263,7 @@ public class CategoryControllerTest {
 
     @Test
     @WithMockUser(username = "user")
+    @DisplayName("Retrieve books by invalid category ID - returns empty list")
     void getBooksByCategoryId_InvalidCategoryId_ReturnsEmptyList() throws Exception {
         Long categoryId = 5L;
         List<BookDtoWithoutCategoryIds> expected = List.of();

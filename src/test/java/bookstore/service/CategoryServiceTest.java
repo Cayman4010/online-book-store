@@ -13,10 +13,11 @@ import bookstore.mapper.CategoryMapper;
 import bookstore.model.Category;
 import bookstore.repository.CategoryRepository;
 import bookstore.service.impl.CategoryServiceImpl;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -39,6 +40,7 @@ public class CategoryServiceTest {
     CategoryMapper categoryMapper;
 
     @Test
+    @DisplayName("Check correct retrieval of category list")
     void findAll_ValidDatabase_ReturnsCategoryDtoList() {
         Category category1 = getCategory1();
         Category category2 = getCategory2();
@@ -58,6 +60,7 @@ public class CategoryServiceTest {
     }
 
     @Test
+    @DisplayName("Check behavior of findAll method for empty database")
     void findAll_EmptyDatabase_ReturnsEmptyPage() {
         PageRequest pageRequest = PageRequest.of(0, 20);
         Page<Category> emptyPage = new PageImpl<>(Collections.emptyList());
@@ -69,6 +72,7 @@ public class CategoryServiceTest {
     }
 
     @Test
+    @DisplayName("Check correct retrieval of category by ID")
     void getById_ValidId_ReturnsCategoryDto() {
         Long categoryId = 1L;
         Category category = getCategory1();
@@ -82,6 +86,7 @@ public class CategoryServiceTest {
     }
 
     @Test
+    @DisplayName("Check throwing EntityNotFoundException for invalid ID")
     void getById_InvalidId_ThrowsEntityNotFoundException() {
         Long invalidId = 5L;
 
@@ -93,8 +98,8 @@ public class CategoryServiceTest {
         assertEquals("Can`t find category by id " + invalidId, exception.getMessage());
     }
 
-
     @Test
+    @DisplayName("Check correct saving of a new category")
     void save_ValidCategory_ReturnsCategoryDto() {
         Category category = getCategory1();
         CreateCategoryRequestDto createRequestDto = getCreateCategoryRequestDto();
@@ -109,6 +114,7 @@ public class CategoryServiceTest {
     }
 
     @Test
+    @DisplayName("Check correct updating of category by ID")
     void updateById_ValidId_ReturnsCategoryDto() {
         Long categoryId = 2L;
         String categoryName = "Horror";
@@ -130,6 +136,7 @@ public class CategoryServiceTest {
     }
 
     @Test
+    @DisplayName("Check throwing EntityNotFoundException for invalid ID in updateById method")
     void updateById_InvalidId_ThrowsEntityNotFoundException() {
         Long invalidId = 5L;
 
@@ -142,6 +149,7 @@ public class CategoryServiceTest {
     }
 
     @Test
+    @DisplayName("Check correct deletion of category by ID")
     void deleteById_ValidId_Success() {
         Long categoryId = 1L;
         categoryService.deleteById(categoryId);
