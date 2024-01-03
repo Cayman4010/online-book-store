@@ -1,6 +1,8 @@
 package bookstore.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -8,6 +10,8 @@ import static org.mockito.Mockito.when;
 import bookstore.dto.book.BookDto;
 import bookstore.dto.book.BookDtoWithoutCategoryIds;
 import bookstore.dto.book.CreateBookRequestDto;
+import bookstore.dto.category.CategoryDto;
+import bookstore.exception.EntityNotFoundException;
 import bookstore.mapper.BookMapper;
 import bookstore.model.Book;
 import bookstore.model.Category;
@@ -15,6 +19,7 @@ import bookstore.repository.BookRepository;
 import bookstore.repository.CategoryRepository;
 import bookstore.service.impl.BookServiceImpl;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -95,6 +100,17 @@ public class BookServiceTest {
     }
 
     @Test
+    void findAll_EmptyDatabase_ReturnsEmptyPage() {
+        PageRequest pageRequest = PageRequest.of(0, 20);
+        Page<Book> emptyPage = new PageImpl<>(Collections.emptyList());
+
+        when(bookRepository.findAll(pageRequest)).thenReturn(emptyPage);
+
+        List<BookDto> actualBookDtoList = bookService.findAll(pageRequest);
+        assertTrue(actualBookDtoList.isEmpty());
+    }
+
+    @Test
     void getById_ValidId_ReturnsBookDto() {
         Long bookId = 1L;
         Book book = getBook1();
@@ -105,6 +121,17 @@ public class BookServiceTest {
 
         BookDto actualBookDto = bookService.getById(bookId);
         assertEquals(expectedBookDto, actualBookDto);
+    }
+
+    @Test
+    void getById_InvalidId_ThrowsEntityNotFoundException() {
+        Long invalidId = 5L;
+
+        when(bookRepository.findById(invalidId)).thenReturn(Optional.empty());
+
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
+                () -> bookService.getById(invalidId));
+        assertEquals("Can`t find book by id" + invalidId, exception.getMessage());
     }
 
     @Test
@@ -132,6 +159,17 @@ public class BookServiceTest {
         verify(bookRepository).save(book);
         verify(bookMapper).toDto(book);
         assertEquals(expectedBookDto, actualBookDto);
+    }
+
+    @Test
+    void updateById_InvalidId_ThrowsEntityNotFoundException() {
+        Long invalidId = 5L;
+
+        when(bookRepository.findById(invalidId)).thenReturn(Optional.empty());
+
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
+                () -> bookService.getById(invalidId));
+        assertEquals("Can`t find book by id" + invalidId, exception.getMessage());
     }
 
     private static BookDto getBookDto1() {

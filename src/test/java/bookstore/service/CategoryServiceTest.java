@@ -1,15 +1,20 @@
 package bookstore.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import bookstore.dto.category.CategoryDto;
 import bookstore.dto.category.CreateCategoryRequestDto;
+import bookstore.exception.EntityNotFoundException;
 import bookstore.mapper.CategoryMapper;
 import bookstore.model.Category;
 import bookstore.repository.CategoryRepository;
 import bookstore.service.impl.CategoryServiceImpl;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -53,6 +58,17 @@ public class CategoryServiceTest {
     }
 
     @Test
+    void findAll_EmptyDatabase_ReturnsEmptyPage() {
+        PageRequest pageRequest = PageRequest.of(0, 20);
+        Page<Category> emptyPage = new PageImpl<>(Collections.emptyList());
+
+        when(categoryRepository.findAll(pageRequest)).thenReturn(emptyPage);
+
+        List<CategoryDto> actualCategoryDtoList = categoryService.findAll(pageRequest);
+        assertTrue(actualCategoryDtoList.isEmpty());
+    }
+
+    @Test
     void getById_ValidId_ReturnsCategoryDto() {
         Long categoryId = 1L;
         Category category = getCategory1();
@@ -64,6 +80,19 @@ public class CategoryServiceTest {
         CategoryDto actualCategoryDto = categoryService.getById(categoryId);
         assertEquals(expectedCategoryDto, actualCategoryDto);
     }
+
+    @Test
+    void getById_InvalidId_ThrowsEntityNotFoundException() {
+        Long invalidId = 5L;
+
+        when(categoryRepository.findById(invalidId)).thenReturn(Optional.empty());
+
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
+            categoryService.getById(invalidId);
+        });
+        assertEquals("Can`t find category by id " + invalidId, exception.getMessage());
+    }
+
 
     @Test
     void save_ValidCategory_ReturnsCategoryDto() {
@@ -98,6 +127,18 @@ public class CategoryServiceTest {
         verify(categoryRepository).save(category);
         verify(categoryMapper).toDto(category);
         assertEquals(expectedCategoryDto, actualCategoryDto);
+    }
+
+    @Test
+    void updateById_InvalidId_ThrowsEntityNotFoundException() {
+        Long invalidId = 5L;
+
+        when(categoryRepository.findById(invalidId)).thenReturn(Optional.empty());
+
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
+                () -> {categoryService.getById(invalidId);
+        });
+        assertEquals("Can`t find category by id " + invalidId, exception.getMessage());
     }
 
     @Test
