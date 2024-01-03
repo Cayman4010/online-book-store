@@ -1,5 +1,6 @@
 
 package bookstore.controller;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -49,7 +50,7 @@ public class BookControllerTest {
     @BeforeAll
     static void beforeAll(
             @Autowired WebApplicationContext applicationContext
-            ) {
+    ) {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(applicationContext)
                 .apply(springSecurity())

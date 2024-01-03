@@ -275,7 +275,8 @@ public class CategoryControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
         List<BookDtoWithoutCategoryIds> actual = objectMapper.readValue(
-                mvcResult.getResponse().getContentAsString(), new TypeReference<List<BookDtoWithoutCategoryIds>>() {
+                mvcResult.getResponse().getContentAsString(),
+                new TypeReference<List<BookDtoWithoutCategoryIds>>() {
                 });
         assertEquals(expected, actual);
     }

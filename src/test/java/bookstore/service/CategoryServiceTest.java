@@ -16,7 +16,6 @@ import bookstore.service.impl.CategoryServiceImpl;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,13 +30,13 @@ import org.springframework.data.domain.PageRequest;
 public class CategoryServiceTest {
 
     @InjectMocks
-    CategoryServiceImpl categoryService;
+    private CategoryServiceImpl categoryService;
 
     @Mock
-    CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
 
     @Mock
-    CategoryMapper categoryMapper;
+    private CategoryMapper categoryMapper;
 
     @Test
     @DisplayName("Check correct retrieval of category list")
@@ -121,18 +120,19 @@ public class CategoryServiceTest {
         String categoryDescription = "Horror stories";
         Category category = getCategory2();
         CreateCategoryRequestDto requestDto = getCreateCategoryRequestDto();
-        CategoryDto expectedCategoryDto = new CategoryDto(categoryId, categoryName, categoryDescription);
+        CategoryDto expectedCategoryDto = new CategoryDto(categoryId,
+                categoryName, categoryDescription);
 
         when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
         when(categoryRepository.save(category)).thenReturn(category);
         when(categoryMapper.toDto(category)).thenReturn(expectedCategoryDto);
 
         CategoryDto actualCategoryDto = categoryService.updateById(2L, requestDto);
+        assertEquals(expectedCategoryDto, actualCategoryDto);
         verify(categoryRepository).findById(categoryId);
         verify(categoryMapper).updateCategory(requestDto, category);
         verify(categoryRepository).save(category);
         verify(categoryMapper).toDto(category);
-        assertEquals(expectedCategoryDto, actualCategoryDto);
     }
 
     @Test
@@ -143,8 +143,8 @@ public class CategoryServiceTest {
         when(categoryRepository.findById(invalidId)).thenReturn(Optional.empty());
 
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
-                () -> {categoryService.getById(invalidId);
-        });
+                () -> categoryService.getById(invalidId));
+
         assertEquals("Can`t find category by id " + invalidId, exception.getMessage());
     }
 

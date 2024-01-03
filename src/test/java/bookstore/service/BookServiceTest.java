@@ -10,7 +10,6 @@ import static org.mockito.Mockito.when;
 import bookstore.dto.book.BookDto;
 import bookstore.dto.book.BookDtoWithoutCategoryIds;
 import bookstore.dto.book.CreateBookRequestDto;
-import bookstore.dto.category.CategoryDto;
 import bookstore.exception.EntityNotFoundException;
 import bookstore.mapper.BookMapper;
 import bookstore.model.Book;
@@ -23,7 +22,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +31,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-
 
 @ExtendWith(MockitoExtension.class)
 public class BookServiceTest {
@@ -154,21 +151,21 @@ public class BookServiceTest {
     @DisplayName("Check updating book by valid ID")
     void updateById_ValidId_ReturnsBookDto() {
         Long bookId = 2L;
-        CreateBookRequestDto requestDto = getCreateBookRequestDto();
         Book book = getBook2();
         BookDto expectedBookDto = getBookDto1();
         expectedBookDto.setId(2L);
+        CreateBookRequestDto requestDto = getCreateBookRequestDto();
 
         when(bookRepository.findById(bookId)).thenReturn(Optional.of(book));
         when(bookRepository.save(book)).thenReturn(book);
         when(bookMapper.toDto(book)).thenReturn(expectedBookDto);
 
         BookDto actualBookDto = bookService.updateById(bookId, requestDto);
+        assertEquals(expectedBookDto, actualBookDto);
         verify(bookRepository).findById(bookId);
         verify(bookMapper).updateBook(requestDto, book);
         verify(bookRepository).save(book);
         verify(bookMapper).toDto(book);
-        assertEquals(expectedBookDto, actualBookDto);
     }
 
     @Test

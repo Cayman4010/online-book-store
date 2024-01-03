@@ -47,9 +47,10 @@ public class BookRepositoryTest {
         Assertions.assertEquals(actual.get(0).getDescription(), expected.get(0).getDescription());
         Assertions.assertEquals(actual.get(0).getCoverImage(), expected.get(0).getCoverImage());
         Assertions.assertEquals(actual.get(0).isDeleted(), expected.get(0).isDeleted());
-        Assertions.assertEquals(actual.get(0).getCategories().stream().map(Category::getName).findFirst()
-                        .orElse(null),
-                expected.get(0).getCategories().stream().map(Category::getName).findFirst().orElse(null));
+        Assertions.assertEquals(actual.get(0).getCategories()
+                        .stream().map(Category::getName).findFirst().orElse(null),
+                expected.get(0).getCategories()
+                        .stream().map(Category::getName).findFirst().orElse(null));
     }
 
     @Test
